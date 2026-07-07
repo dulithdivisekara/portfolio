@@ -1,863 +1,498 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dulith Divisekara | Linux Mint Desktop</title>
+    <title>Dulith Divisekara | IT Undergraduate Portfolio</title>
+    <meta name="description" content="Information Technology Undergraduate specializing in networking infrastructure, serverless architectures, and embedded IoT systems.">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
-        :root {
-            --mint-green: #87cf3e;
-            --mint-dark: #1a1a2e;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
         body {
-            font-family: 'Inter', system-ui, sans-serif;
-            overflow: hidden;
-            touch-action: manipulation;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
         }
 
-        .font-mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
-
-        .desktop-bg {
-            background:
-                radial-gradient(ellipse at 20% 80%, rgba(135, 207, 62, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 20%, rgba(16, 185, 129, 0.06) 0%, transparent 50%),
-                linear-gradient(160deg, #0f172a 0%, #1e293b 40%, #0c1222 100%);
+        .font-mono {
+            font-family: 'JetBrains Mono', ui-monospace, monospace;
         }
 
-        .window {
-            display: none;
-        }
-        .window.open {
-            display: flex;
-        }
-        .window.minimized {
-            display: none !important;
-        }
-
-        .desktop-icon:active { transform: scale(0.95); }
-
-        .taskbar-btn.active {
-            background: rgba(135, 207, 62, 0.2);
-            border-bottom: 2px solid var(--mint-green);
-        }
-
-        .terminal-output { white-space: pre-wrap; word-break: break-word; }
-
-        .scrollbar-thin::-webkit-scrollbar { width: 6px; }
-        .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
-        .scrollbar-thin::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 3px; }
-
-        #start-menu { transform-origin: bottom left; }
-        #start-menu.hidden { display: none; }
-        #start-menu.visible { display: block; animation: menuPop 0.15s ease-out; }
-
-        @keyframes menuPop {
-            from { opacity: 0; transform: scale(0.95) translateY(8px); }
-            to   { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        .window-drag-handle { cursor: default; }
-        @media (min-width: 768px) {
-            .window-drag-handle { cursor: move; }
+        ::selection {
+            background-color: rgb(52 211 153 / 0.3);
+            color: rgb(236 253 245);
         }
     </style>
 </head>
-<body class="desktop-bg text-gray-100 h-dvh w-full overflow-hidden select-none">
+<body class="bg-[#0a0a0a] text-zinc-100 antialiased overflow-x-hidden">
 
-    <!-- ═══════════════════ DESKTOP AREA ═══════════════════ -->
-    <div id="desktop" class="relative w-full h-[calc(100dvh-48px)] overflow-hidden">
+    <!-- ================= STICKY NAVIGATION ================= -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-zinc-950/80 border-b border-zinc-800/80">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+            <!-- Brand -->
+            <a href="#" class="text-sm font-semibold tracking-tight text-zinc-100 hover:text-emerald-400 transition-colors">
+                Dulith<span class="text-zinc-500">.</span>
+            </a>
 
-        <!-- Desktop Icons: vertical on md+, grid on mobile -->
-        <div id="desktop-icons"
-             class="grid grid-cols-3 gap-4 p-4 pt-6
-                    md:flex md:flex-col md:gap-1 md:p-3 md:pt-4 md:w-28">
+            <!-- Desktop Nav Links -->
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#about" class="nav-link text-sm text-zinc-400 hover:text-zinc-100 transition-colors">About</a>
+                <a href="#skills" class="nav-link text-sm text-zinc-400 hover:text-zinc-100 transition-colors">Skills</a>
+                <a href="#projects" class="nav-link text-sm text-zinc-400 hover:text-zinc-100 transition-colors">Projects</a>
+                <a href="#contact" class="nav-link text-sm text-zinc-400 hover:text-zinc-100 transition-colors">Contact</a>
+                <span class="w-px h-4 bg-zinc-800"></span>
+                <a href="https://github.com/dulithdivisekara" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-zinc-100 transition-colors" aria-label="GitHub">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                </a>
+                <a href="https://linkedin.com/in/dulithdivisekara" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-zinc-100 transition-colors" aria-label="LinkedIn">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 114.127 0 2.063 2.063 0 01-2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                </a>
+            </div>
 
-            <button data-window="terminal" class="desktop-icon group flex flex-col items-center gap-1.5 p-3 md:p-2 rounded-lg hover:bg-white/5 active:bg-white/10 transition-colors min-w-[72px] min-h-[72px] md:min-w-0 md:min-h-0">
-                <div class="w-12 h-12 md:w-10 md:h-10 flex items-center justify-center rounded-lg bg-zinc-800/80 border border-zinc-700/50 group-hover:border-emerald-500/40 transition-colors">
-                    <svg class="w-7 h-7 md:w-6 md:h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                </div>
-                <span class="text-[11px] md:text-xs text-center leading-tight text-gray-200 drop-shadow-lg px-1">Terminal.sh</span>
-            </button>
-
-            <button data-window="system-info" class="desktop-icon group flex flex-col items-center gap-1.5 p-3 md:p-2 rounded-lg hover:bg-white/5 active:bg-white/10 transition-colors min-w-[72px] min-h-[72px] md:min-w-0 md:min-h-0">
-                <div class="w-12 h-12 md:w-10 md:h-10 flex items-center justify-center rounded-lg bg-zinc-800/80 border border-zinc-700/50 group-hover:border-emerald-500/40 transition-colors">
-                    <svg class="w-7 h-7 md:w-6 md:h-6 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                </div>
-                <span class="text-[11px] md:text-xs text-center leading-tight text-gray-200 drop-shadow-lg px-1">System_Info.txt</span>
-            </button>
-
-            <button data-window="projects" class="desktop-icon group flex flex-col items-center gap-1.5 p-3 md:p-2 rounded-lg hover:bg-white/5 active:bg-white/10 transition-colors min-w-[72px] min-h-[72px] md:min-w-0 md:min-h-0">
-                <div class="w-12 h-12 md:w-10 md:h-10 flex items-center justify-center rounded-lg bg-zinc-800/80 border border-zinc-700/50 group-hover:border-emerald-500/40 transition-colors">
-                    <svg class="w-7 h-7 md:w-6 md:h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
-                </div>
-                <span class="text-[11px] md:text-xs text-center leading-tight text-gray-200 drop-shadow-lg px-1">Projects/</span>
-            </button>
-
-            <button data-window="hobbies" class="desktop-icon group flex flex-col items-center gap-1.5 p-3 md:p-2 rounded-lg hover:bg-white/5 active:bg-white/10 transition-colors min-w-[72px] min-h-[72px] md:min-w-0 md:min-h-0">
-                <div class="w-12 h-12 md:w-10 md:h-10 flex items-center justify-center rounded-lg bg-zinc-800/80 border border-zinc-700/50 group-hover:border-emerald-500/40 transition-colors">
-                    <svg class="w-7 h-7 md:w-6 md:h-6 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-                </div>
-                <span class="text-[11px] md:text-xs text-center leading-tight text-gray-200 drop-shadow-lg px-1">Hobbies.dir</span>
-            </button>
-
-            <button data-window="contact" class="desktop-icon group flex flex-col items-center gap-1.5 p-3 md:p-2 rounded-lg hover:bg-white/5 active:bg-white/10 transition-colors min-w-[72px] min-h-[72px] md:min-w-0 md:min-h-0">
-                <div class="w-12 h-12 md:w-10 md:h-10 flex items-center justify-center rounded-lg bg-zinc-800/80 border border-zinc-700/50 group-hover:border-emerald-500/40 transition-colors">
-                    <svg class="w-7 h-7 md:w-6 md:h-6 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                </div>
-                <span class="text-[11px] md:text-xs text-center leading-tight text-gray-200 drop-shadow-lg px-1">Contact_Me.sh</span>
+            <!-- Mobile Menu Toggle -->
+            <button id="mobile-menu-btn" class="md:hidden flex items-center justify-center w-10 h-10 rounded-lg text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/60 transition-colors" aria-label="Toggle navigation" aria-expanded="false">
+                <svg id="menu-icon-open" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                <svg id="menu-icon-close" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
 
-        <!-- ═══════════════ WINDOW: Terminal.sh ═══════════════ -->
-        <div id="win-terminal" data-id="terminal" data-title="Terminal.sh"
-             class="window fixed inset-0 z-50 bg-zinc-900 w-full h-full flex flex-col
-                    md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2
-                    md:w-[650px] md:h-[450px] md:rounded-lg md:shadow-2xl md:border md:border-zinc-700">
-            <div class="window-drag-handle flex items-center justify-between bg-zinc-800 px-3 py-2 shrink-0 md:rounded-t-lg border-b border-zinc-700">
-                <div class="flex items-center gap-2 min-w-0">
-                    <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3"/></svg>
-                    <span class="text-sm font-medium truncate">Terminal.sh</span>
-                </div>
-                <div class="flex items-center gap-1 shrink-0">
-                    <button data-action="minimize" class="hidden md:flex w-7 h-7 items-center justify-center rounded hover:bg-zinc-700 text-gray-400 hover:text-white transition-colors" title="Minimize">
-                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="2" rx="1"/></svg>
-                    </button>
-                    <button data-action="close" class="flex items-center gap-1 px-3 py-1.5 md:px-0 md:w-7 md:h-7 md:justify-center rounded bg-red-600/80 md:bg-transparent hover:bg-red-600 text-white md:text-gray-400 md:hover:text-white text-sm font-semibold md:font-normal transition-colors" title="Close">
-                        <span class="md:hidden">✕ Close</span>
-                        <svg class="hidden md:block w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                    </button>
-                </div>
-            </div>
-            <div id="terminal-body" class="flex-1 bg-[#181818] text-emerald-400 font-mono p-4 text-sm md:text-base overflow-y-auto scrollbar-thin flex flex-col min-h-0">
-                <div id="terminal-output" class="terminal-output flex-1 mb-2"></div>
-                <div class="flex items-center gap-1 shrink-0">
-                    <span class="text-emerald-500 select-none">dulith@mint-portfolio:~$</span>
-                    <input id="terminal-input" type="text" autocomplete="off" spellcheck="false"
-                           class="flex-1 bg-transparent outline-none text-emerald-400 caret-emerald-400 min-w-0 select-text" placeholder="">
+        <!-- Mobile Nav Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-zinc-800/80 bg-zinc-950/95 backdrop-blur-md">
+            <div class="px-6 py-4 flex flex-col gap-4">
+                <a href="#about" class="mobile-nav-link text-sm text-zinc-300 hover:text-emerald-400 transition-colors py-1">About</a>
+                <a href="#skills" class="mobile-nav-link text-sm text-zinc-300 hover:text-emerald-400 transition-colors py-1">Skills</a>
+                <a href="#projects" class="mobile-nav-link text-sm text-zinc-300 hover:text-emerald-400 transition-colors py-1">Projects</a>
+                <a href="#contact" class="mobile-nav-link text-sm text-zinc-300 hover:text-emerald-400 transition-colors py-1">Contact</a>
+                <div class="flex items-center gap-4 pt-2 border-t border-zinc-800/80">
+                    <a href="https://github.com/dulithdivisekara" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-zinc-100 transition-colors" aria-label="GitHub">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                    </a>
+                    <a href="https://linkedin.com/in/dulithdivisekara" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-zinc-100 transition-colors" aria-label="LinkedIn">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 114.127 0 2.063 2.063 0 01-2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    </a>
                 </div>
             </div>
         </div>
+    </nav>
 
-        <!-- ═══════════════ WINDOW: System_Info.txt ═══════════════ -->
-        <div id="win-system-info" data-id="system-info" data-title="System_Info.txt"
-             class="window fixed inset-0 z-50 bg-zinc-900 w-full h-full flex flex-col
-                    md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2
-                    md:w-[650px] md:h-[450px] md:rounded-lg md:shadow-2xl md:border md:border-zinc-700">
-            <div class="window-drag-handle flex items-center justify-between bg-zinc-800 px-3 py-2 shrink-0 md:rounded-t-lg border-b border-zinc-700">
-                <div class="flex items-center gap-2 min-w-0">
-                    <svg class="w-4 h-4 text-sky-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                    <span class="text-sm font-medium truncate">System_Info.txt — Neofetch</span>
-                </div>
-                <div class="flex items-center gap-1 shrink-0">
-                    <button data-action="minimize" class="hidden md:flex w-7 h-7 items-center justify-center rounded hover:bg-zinc-700 text-gray-400 hover:text-white transition-colors" title="Minimize">
-                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="2" rx="1"/></svg>
-                    </button>
-                    <button data-action="close" class="flex items-center gap-1 px-3 py-1.5 md:px-0 md:w-7 md:h-7 md:justify-center rounded bg-red-600/80 md:bg-transparent hover:bg-red-600 text-white md:text-gray-400 md:hover:text-white text-sm font-semibold md:font-normal transition-colors" title="Close">
-                        <span class="md:hidden">✕ Close</span>
-                        <svg class="hidden md:block w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                    </button>
-                </div>
+    <main>
+
+        <!-- ================= HERO SECTION ================= -->
+        <header class="relative min-h-screen flex flex-col justify-center px-6 pt-24 pb-20">
+            <!-- Subtle background glow -->
+            <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+                <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-emerald-500/5 rounded-full blur-3xl"></div>
+                <div class="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] bg-cyan-500/5 rounded-full blur-3xl"></div>
             </div>
-            <div class="flex-1 overflow-y-auto scrollbar-thin p-4 md:p-6 min-h-0">
-                <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-start">
-                    <pre class="font-mono text-[10px] sm:text-xs leading-[1.15] text-[#87cf3e] shrink-0 select-none" aria-hidden="true"><span class="text-emerald-400">           </span><span class="text-white">dulith@mint</span>
-<span class="text-emerald-400">    #######</span>
-<span class="text-emerald-400">  ##</span><span class="text-white">       </span><span class="text-emerald-400">##</span>
-<span class="text-emerald-400"> ##</span><span class="text-white">  </span><span class="text-emerald-500">Mint</span><span class="text-white">   </span><span class="text-emerald-400">##</span>
-<span class="text-emerald-400"> ##</span><span class="text-white">  </span><span class="text-emerald-500">21.3</span><span class="text-white">   </span><span class="text-emerald-400">##</span>
-<span class="text-emerald-400">  ##</span><span class="text-white">       </span><span class="text-emerald-400">##</span>
-<span class="text-emerald-400">    #######</span>
-<span class="text-emerald-400">         </span><span class="text-zinc-500">~/.portfolio</span></pre>
-                    <div class="font-mono text-sm space-y-1.5 flex-1 min-w-0">
-                        <p><span class="text-[#87cf3e] font-semibold">Host</span><span class="text-zinc-500">..................</span> <span class="text-gray-200">dulith-mint-portfolio</span></p>
-                        <p><span class="text-[#87cf3e] font-semibold">OS</span><span class="text-zinc-500">.....................</span> <span class="text-gray-200">Linux Mint 21.3 Cinnamon</span></p>
-                        <p><span class="text-[#87cf3e] font-semibold">Kernel</span><span class="text-zinc-500">................</span> <span class="text-gray-200">portfolio-web 6.17.0</span></p>
-                        <p><span class="text-[#87cf3e] font-semibold">Shell</span><span class="text-zinc-500">.................</span> <span class="text-gray-200">bash 5.2 / Terminal.sh</span></p>
-                        <p><span class="text-[#87cf3e] font-semibold">Role</span><span class="text-zinc-500">..................</span> <span class="text-gray-200">IT Undergraduate &amp; Developer</span></p>
-                        <p><span class="text-[#87cf3e] font-semibold">Education</span><span class="text-zinc-500">.............</span> <span class="text-gray-200">B.Sc (Hons) IT @ SLIIT</span></p>
-                        <p class="pt-2"><span class="text-[#87cf3e] font-semibold">Core Competencies</span></p>
-                        <p class="text-gray-300 pl-2">▸ Full-stack application development</p>
-                        <p class="text-gray-300 pl-2">▸ Computer networking (TCP/IP, DHCP)</p>
-                        <p class="text-gray-300 pl-2">▸ Embedded hardware &amp; IoT (Arduino)</p>
-                        <p class="text-gray-300 pl-2">▸ Linux systems &amp; Git workflows</p>
-                        <p class="pt-2 text-zinc-500 text-xs">Uptime: since you opened this page ♥</p>
+
+            <div class="relative max-w-4xl mx-auto w-full text-center md:text-left">
+
+                <!-- Status Badge -->
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/5 text-emerald-400 text-xs font-medium mb-8">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Available for collaborative roles &amp; internships
+                </div>
+
+                <!-- Main Headline -->
+                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-zinc-50 mb-6">
+                    Dulith Divisekara
+                </h1>
+
+                <!-- Subheadline -->
+                <p class="text-lg md:text-xl text-zinc-400 max-w-2xl leading-relaxed font-light mb-10">
+                    Information Technology Undergraduate specializing in networking infrastructure, serverless architectures, and embedded IoT systems.
+                </p>
+
+                <!-- CTA Buttons -->
+                <div class="flex flex-col sm:flex-row items-center md:items-start gap-4 mb-12">
+                    <a href="#projects"
+                       class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 text-zinc-950 font-semibold text-sm hover:opacity-90 transition-opacity">
+                        Explore Projects ↓
+                    </a>
+                    <a href="#contact"
+                       class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg border border-zinc-700 text-zinc-300 font-semibold text-sm hover:border-zinc-500 hover:text-zinc-100 transition-colors">
+                        Get in Touch
+                    </a>
+                </div>
+
+                <!-- CLI Flex Box -->
+                <div class="max-w-xl mx-auto md:mx-0">
+                    <p class="text-xs text-zinc-500 mb-2 italic">Prefer the command line? Run my edge-routed resume in your terminal.</p>
+                    <div class="group relative bg-zinc-900/60 border border-zinc-800/80 rounded-xl p-4 hover:border-zinc-600 transition-colors">
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="w-2.5 h-2.5 rounded-full bg-red-500/80"></div>
+                            <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></div>
+                            <div class="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></div>
+                        </div>
+                        <div class="flex items-center justify-between gap-3">
+                            <code id="cli-command" class="font-mono text-sm text-emerald-400 break-all">curl https://cv.dulithdivisekara.workers.dev</code>
+                            <button id="copy-btn"
+                                    class="shrink-0 px-3 py-1.5 rounded-md border border-zinc-700 text-xs text-zinc-400 hover:text-zinc-100 hover:border-zinc-500 transition-colors font-mono"
+                                    aria-label="Copy command to clipboard">
+                                Copy
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </header>
 
-        <!-- ═══════════════ WINDOW: Projects/ ═══════════════ -->
-        <div id="win-projects" data-id="projects" data-title="Projects/"
-             class="window fixed inset-0 z-50 bg-zinc-900 w-full h-full flex flex-col
-                    md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2
-                    md:w-[650px] md:h-[450px] md:rounded-lg md:shadow-2xl md:border md:border-zinc-700">
-            <div class="window-drag-handle flex items-center justify-between bg-zinc-800 px-3 py-2 shrink-0 md:rounded-t-lg border-b border-zinc-700">
-                <div class="flex items-center gap-2 min-w-0">
-                    <svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
-                    <span class="text-sm font-medium truncate">Projects/ — Nemo File Manager</span>
+        <!-- ================= ABOUT ME & EDUCATION ================= -->
+        <section id="about" class="py-20 px-6">
+            <div class="max-w-6xl mx-auto">
+                <div class="mb-12">
+                    <p class="text-xs font-mono text-emerald-400 uppercase tracking-widest mb-3">About</p>
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-zinc-50">About Me &amp; Education</h2>
                 </div>
-                <div class="flex items-center gap-1 shrink-0">
-                    <button data-action="minimize" class="hidden md:flex w-7 h-7 items-center justify-center rounded hover:bg-zinc-700 text-gray-400 hover:text-white transition-colors" title="Minimize">
-                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="2" rx="1"/></svg>
-                    </button>
-                    <button data-action="close" class="flex items-center gap-1 px-3 py-1.5 md:px-0 md:w-7 md:h-7 md:justify-center rounded bg-red-600/80 md:bg-transparent hover:bg-red-600 text-white md:text-gray-400 md:hover:text-white text-sm font-semibold md:font-normal transition-colors" title="Close">
-                        <span class="md:hidden">✕ Close</span>
-                        <svg class="hidden md:block w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                    </button>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                    <!-- Left: Narrative -->
+                    <div class="space-y-4">
+                        <p class="text-zinc-400 leading-relaxed">
+                            I focus on building scalable, practical systems that solve real-world problems — bridging the gap between low-level hardware logic and high-level cloud environments.
+                        </p>
+                        <p class="text-zinc-400 leading-relaxed">
+                            From configuring TCP/IP routing and DHCP infrastructure to deploying serverless edge workers on Cloudflare, I approach every layer of the stack with the same engineering discipline. Whether it's writing Arduino firmware for sensor automation or architecting conditional HTTP routing for CLI-first resumes, I build tools that are functional, maintainable, and genuinely useful.
+                        </p>
+                        <p class="text-zinc-400 leading-relaxed">
+                            I'm actively seeking collaborative roles and internships where I can contribute to teams building infrastructure, backend services, or embedded systems.
+                        </p>
+                    </div>
+
+                    <!-- Right: Academic Card -->
+                    <div class="bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-8 hover:border-zinc-600 transition-colors">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
+                            </div>
+                            <h3 class="text-lg font-semibold text-zinc-100">Academic Background</h3>
+                        </div>
+                        <dl class="space-y-5">
+                            <div>
+                                <dt class="text-xs font-mono text-zinc-500 uppercase tracking-wider mb-1">Degree</dt>
+                                <dd class="text-zinc-200 font-medium">B.Sc (Hons) in Information Technology</dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs font-mono text-zinc-500 uppercase tracking-wider mb-1">Institution</dt>
+                                <dd class="text-zinc-200">Sri Lanka Institute of Information Technology (SLIIT)</dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs font-mono text-zinc-500 uppercase tracking-wider mb-1">Focus Areas</dt>
+                                <dd class="flex flex-wrap gap-2 mt-2">
+                                    <span class="px-2.5 py-1 rounded-md bg-zinc-800/80 border border-zinc-700/60 text-xs font-mono text-zinc-300">Core Software Engineering</span>
+                                    <span class="px-2.5 py-1 rounded-md bg-zinc-800/80 border border-zinc-700/60 text-xs font-mono text-zinc-300">Computer Networks</span>
+                                    <span class="px-2.5 py-1 rounded-md bg-zinc-800/80 border border-zinc-700/60 text-xs font-mono text-zinc-300">Systems Administration</span>
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
                 </div>
             </div>
-            <div class="flex-1 overflow-y-auto scrollbar-thin p-4 min-h-0">
-                <p class="text-xs text-zinc-500 font-mono mb-4">~/Projects — 3 items</p>
-                <div class="space-y-3">
-                    <div class="group bg-zinc-800/50 border border-zinc-700/60 rounded-lg p-4 hover:border-emerald-500/30 transition-colors">
-                        <div class="flex items-start gap-3">
-                            <div class="w-10 h-10 rounded bg-amber-500/10 flex items-center justify-center shrink-0">
-                                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
-                            </div>
+        </section>
+
+        <!-- ================= TECHNICAL ARSENAL ================= -->
+        <section id="skills" class="py-20 px-6 border-t border-zinc-800/50">
+            <div class="max-w-6xl mx-auto">
+                <div class="mb-12">
+                    <p class="text-xs font-mono text-cyan-400 uppercase tracking-widest mb-3">Skills</p>
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-zinc-50">Technical Arsenal</h2>
+                    <p class="text-zinc-500 mt-3 max-w-xl">A categorized overview of the technologies and domains I work with across software, infrastructure, and hardware.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                    <!-- Skill Card 1 -->
+                    <div class="group bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-6 hover:border-zinc-600 hover:scale-[1.01] transition-all duration-200">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-5">
+                            <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                        </div>
+                        <h3 class="text-base font-semibold text-zinc-100 mb-4">Core Software &amp; Databases</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-center gap-2 text-sm text-zinc-400"><span class="text-emerald-400 font-mono text-xs">▸</span> Java</li>
+                            <li class="flex items-center gap-2 text-sm text-zinc-400"><span class="text-emerald-400 font-mono text-xs">▸</span> JavaScript</li>
+                            <li class="flex items-center gap-2 text-sm text-zinc-400"><span class="text-emerald-400 font-mono text-xs">▸</span> SQL</li>
+                            <li class="flex items-center gap-2 text-sm text-zinc-400"><span class="text-emerald-400 font-mono text-xs">▸</span> Object-Oriented Programming</li>
+                            <li class="flex items-center gap-2 text-sm text-zinc-400"><span class="text-emerald-400 font-mono text-xs">▸</span> Git / GitHub</li>
+                        </ul>
+                    </div>
+
+                    <!-- Skill Card 2 -->
+                    <div class="group bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-6 hover:border-zinc-600 hover:scale-[1.01] transition-all duration-200">
+                        <div class="w-10 h-10 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center mb-5">
+                            <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9"/></svg>
+                        </div>
+                        <h3 class="text-base font-semibold text-zinc-100 mb-4">Networking &amp; Systems</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-center gap-2 text-sm text-zinc-400"><span class="text-cyan-400 font-mono text-xs">▸</span> TCP/IP Protocols</li>
+                            <li class="flex items-center gap-2 text-sm text-zinc-400"><span class="text-cyan-400 font-mono text-xs">▸</span> DHCP Routing &amp; Band Configuration</li>
+                            <li class="flex items-center gap-2 text-sm text-zinc-400"><span class="text-cyan-400 font-mono text-xs">▸</span> VoLTE / Mobile Wireless Tech</li>
+                            <li class="flex items-center gap-2 text-sm text-zinc-400"><span class="text-cyan-400 font-mono text-xs">▸</span> Linux Administration (Mint / Debian)</li>
+                        </ul>
+                    </div>
+
+                    <!-- Skill Card 3 -->
+                    <div class="group bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-6 hover:border-zinc-600 hover:scale-[1.01] transition-all duration-200">
+                        <div class="w-10 h-10 rounded-lg bg-violet-500/10 border border-violet-500/20 flex items-center justify-center mb-5">
+                            <svg class="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/></svg>
+                        </div>
+                        <h3 class="text-base font-semibold text-zinc-100 mb-4">Cloud &amp; Embedded IoT</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-center gap-2 text-sm text-zinc-400"><span class="text-violet-400 font-mono text-xs">▸</span> Cloudflare Workers (Serverless Edge)</li>
+                            <li class="flex items-center gap-2 text-sm text-zinc-400"><span class="text-violet-400 font-mono text-xs">▸</span> Arduino Firmware Development</li>
+                            <li class="flex items-center gap-2 text-sm text-zinc-400"><span class="text-violet-400 font-mono text-xs">▸</span> Smart Sensor Automation</li>
+                            <li class="flex items-center gap-2 text-sm text-zinc-400"><span class="text-violet-400 font-mono text-xs">▸</span> Circuit Wiring Layouts</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= FEATURED WORK / PROJECTS ================= -->
+        <section id="projects" class="py-20 px-6 border-t border-zinc-800/50">
+            <div class="max-w-6xl mx-auto">
+                <div class="mb-12">
+                    <p class="text-xs font-mono text-emerald-400 uppercase tracking-widest mb-3">Work</p>
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-zinc-50">Featured Work</h2>
+                    <p class="text-zinc-500 mt-3 max-w-xl">Selected projects spanning serverless edge computing, embedded IoT, and technical leadership.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                    <!-- ================= PROJECT CARD 1 ================= -->
+                    <article class="group lg:col-span-2 bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-8 hover:border-zinc-600 hover:scale-[1.005] transition-all duration-200">
+                        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
                             <div class="flex-1 min-w-0">
-                                <h3 class="font-semibold text-gray-100">Serverless CLI CV</h3>
-                                <p class="text-xs font-mono text-emerald-400/80 mt-0.5">serverless-cli-cv/</p>
-                                <p class="text-sm text-zinc-400 mt-2 leading-relaxed">Cloudflare Workers edge-routing script that inspects HTTP headers — serves raw ANSI-colored CLI resume text to curl/wget while redirecting browser user agents.</p>
-                                <a href="https://github.com/dulithdivisekara" target="_blank" rel="noopener noreferrer"
-                                   class="inline-flex items-center gap-1.5 mt-3 text-xs font-medium text-[#87cf3e] hover:text-emerald-300 transition-colors select-text">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                                    View on GitHub
-                                </a>
+                                <p class="text-xs font-mono text-emerald-400 uppercase tracking-widest mb-2">Serverless / Edge</p>
+                                <h3 class="text-xl md:text-2xl font-bold text-zinc-50 mb-3">Serverless Conditional CLI Resume</h3>
+                                <p class="text-zinc-400 text-sm leading-relaxed mb-5 max-w-2xl">
+                                    Engineered an edge-routed Cloudflare Worker microservice inspecting HTTP User-Agent headers to serve ANSI-colored terminal resumes to CLI tools while redirecting web browsers to a graphical portfolio.
+                                </p>
+                                <div class="flex flex-wrap gap-2 mb-6">
+                                    <span class="px-2.5 py-1 rounded-md bg-zinc-800/80 border border-zinc-700/60 text-xs font-mono text-zinc-300">Cloudflare Workers</span>
+                                    <span class="px-2.5 py-1 rounded-md bg-zinc-800/80 border border-zinc-700/60 text-xs font-mono text-zinc-300">JavaScript</span>
+                                    <span class="px-2.5 py-1 rounded-md bg-zinc-800/80 border border-zinc-700/60 text-xs font-mono text-zinc-300">Edge Routing</span>
+                                    <span class="px-2.5 py-1 rounded-md bg-zinc-800/80 border border-zinc-700/60 text-xs font-mono text-zinc-300">HTTP Headers</span>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="group bg-zinc-800/50 border border-zinc-700/60 rounded-lg p-4 hover:border-emerald-500/30 transition-colors">
-                        <div class="flex items-start gap-3">
-                            <div class="w-10 h-10 rounded bg-cyan-500/10 flex items-center justify-center shrink-0">
-                                <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <h3 class="font-semibold text-gray-100">Arduino Smart Home Framework</h3>
-                                <p class="text-xs font-mono text-cyan-400/80 mt-0.5">arduino-smart-home/</p>
-                                <p class="text-sm text-zinc-400 mt-2 leading-relaxed">Embedded C++/Java IoT logic with smart sensor ecosystems — clean circuit wiring layouts and object-oriented hardware control scripts.</p>
-                                <a href="https://github.com/dulithdivisekara" target="_blank" rel="noopener noreferrer"
-                                   class="inline-flex items-center gap-1.5 mt-3 text-xs font-medium text-[#87cf3e] hover:text-emerald-300 transition-colors select-text">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                                    View on GitHub
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="group bg-zinc-800/50 border border-zinc-700/60 rounded-lg p-4 hover:border-emerald-500/30 transition-colors">
-                        <div class="flex items-start gap-3">
-                            <div class="w-10 h-10 rounded bg-violet-500/10 flex items-center justify-center shrink-0">
-                                <svg class="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <h3 class="font-semibold text-gray-100">Technatia Exhibition</h3>
-                                <p class="text-xs font-mono text-violet-400/80 mt-0.5">technatia-exhibition/</p>
-                                <p class="text-sm text-zinc-400 mt-2 leading-relaxed">Technical committee management platform for university exhibition events — coordinating schedules, resources, and team workflows.</p>
-                                <a href="https://github.com/dulithdivisekara" target="_blank" rel="noopener noreferrer"
-                                   class="inline-flex items-center gap-1.5 mt-3 text-xs font-medium text-[#87cf3e] hover:text-emerald-300 transition-colors select-text">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                                    View on GitHub
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ═══════════════ WINDOW: Hobbies.dir ═══════════════ -->
-        <div id="win-hobbies" data-id="hobbies" data-title="Hobbies.dir"
-             class="window fixed inset-0 z-50 bg-zinc-900 w-full h-full flex flex-col
-                    md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2
-                    md:w-[650px] md:h-[450px] md:rounded-lg md:shadow-2xl md:border md:border-zinc-700">
-            <div class="window-drag-handle flex items-center justify-between bg-zinc-800 px-3 py-2 shrink-0 md:rounded-t-lg border-b border-zinc-700">
-                <div class="flex items-center gap-2 min-w-0">
-                    <svg class="w-4 h-4 text-pink-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-                    <span class="text-sm font-medium truncate">Hobbies.dir — Beyond the Code</span>
-                </div>
-                <div class="flex items-center gap-1 shrink-0">
-                    <button data-action="minimize" class="hidden md:flex w-7 h-7 items-center justify-center rounded hover:bg-zinc-700 text-gray-400 hover:text-white transition-colors" title="Minimize">
-                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="2" rx="1"/></svg>
-                    </button>
-                    <button data-action="close" class="flex items-center gap-1 px-3 py-1.5 md:px-0 md:w-7 md:h-7 md:justify-center rounded bg-red-600/80 md:bg-transparent hover:bg-red-600 text-white md:text-gray-400 md:hover:text-white text-sm font-semibold md:font-normal transition-colors" title="Close">
-                        <span class="md:hidden">✕ Close</span>
-                        <svg class="hidden md:block w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                    </button>
-                </div>
-            </div>
-            <div class="flex-1 overflow-y-auto scrollbar-thin p-4 min-h-0">
-                <p class="text-xs text-zinc-500 font-mono mb-4">~/Hobbies — 3 directories</p>
-                <div class="grid grid-cols-1 sm:grid-cols-1 gap-4">
-                    <article class="bg-zinc-800/40 border border-zinc-700/50 rounded-xl overflow-hidden">
-                        <div class="h-24 bg-gradient-to-br from-amber-900/40 to-zinc-900 flex items-center justify-center">
-                            <svg class="w-12 h-12 text-amber-400/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
-                        </div>
-                        <div class="p-4">
-                            <h3 class="font-semibold text-gray-100">Acoustic Guitar</h3>
-                            <p class="text-sm text-zinc-400 mt-1 leading-relaxed">Music arrangement and acoustic guitar tracks — blending melody with technical precision, one chord progression at a time.</p>
+                            <a href="https://github.com/dulithdivisekara" target="_blank" rel="noopener noreferrer"
+                               class="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-zinc-700 text-sm font-medium text-zinc-300 hover:border-emerald-500/50 hover:text-emerald-400 transition-colors">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                                View on GitHub
+                            </a>
                         </div>
                     </article>
-                    <article class="bg-zinc-800/40 border border-zinc-700/50 rounded-xl overflow-hidden">
-                        <div class="h-24 bg-gradient-to-br from-red-900/30 to-zinc-900 flex items-center justify-center">
-                            <svg class="w-12 h-12 text-red-400/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                        </div>
-                        <div class="p-4">
-                            <h3 class="font-semibold text-gray-100">Classic Motorcycle Restoration</h3>
-                            <p class="text-sm text-zinc-400 mt-1 leading-relaxed">Mechanical nostalgia — restoring vintage motorcycles, understanding engine systems, and keeping classic engineering alive.</p>
-                        </div>
-                    </article>
-                    <article class="bg-zinc-800/40 border border-zinc-700/50 rounded-xl overflow-hidden">
-                        <div class="h-24 bg-gradient-to-br from-emerald-900/30 to-zinc-900 flex items-center justify-center">
-                            <svg class="w-12 h-12 text-emerald-400/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                        </div>
-                        <div class="p-4">
-                            <h3 class="font-semibold text-gray-100">Linux OS Customization</h3>
-                            <p class="text-sm text-zinc-400 mt-1 leading-relaxed">Tweaking desktop environments, theming Cinnamon/MATE, and building the perfect Linux workstation — because the OS should feel like home.</p>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </div>
 
-        <!-- ═══════════════ WINDOW: Contact_Me.sh ═══════════════ -->
-        <div id="win-contact" data-id="contact" data-title="Contact_Me.sh"
-             class="window fixed inset-0 z-50 bg-zinc-900 w-full h-full flex flex-col
-                    md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2
-                    md:w-[650px] md:h-[450px] md:rounded-lg md:shadow-2xl md:border md:border-zinc-700">
-            <div class="window-drag-handle flex items-center justify-between bg-zinc-800 px-3 py-2 shrink-0 md:rounded-t-lg border-b border-zinc-700">
-                <div class="flex items-center gap-2 min-w-0">
-                    <svg class="w-4 h-4 text-violet-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                    <span class="text-sm font-medium truncate">Contact_Me.sh — Mail Client</span>
-                </div>
-                <div class="flex items-center gap-1 shrink-0">
-                    <button data-action="minimize" class="hidden md:flex w-7 h-7 items-center justify-center rounded hover:bg-zinc-700 text-gray-400 hover:text-white transition-colors" title="Minimize">
-                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="2" rx="1"/></svg>
-                    </button>
-                    <button data-action="close" class="flex items-center gap-1 px-3 py-1.5 md:px-0 md:w-7 md:h-7 md:justify-center rounded bg-red-600/80 md:bg-transparent hover:bg-red-600 text-white md:text-gray-400 md:hover:text-white text-sm font-semibold md:font-normal transition-colors" title="Close">
-                        <span class="md:hidden">✕ Close</span>
-                        <svg class="hidden md:block w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                    </button>
+                    <!-- ================= PROJECT CARD 2 ================= -->
+                    <article class="group bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-8 hover:border-zinc-600 hover:scale-[1.01] transition-all duration-200">
+                        <p class="text-xs font-mono text-cyan-400 uppercase tracking-widest mb-2">IoT / Hardware</p>
+                        <h3 class="text-xl font-bold text-zinc-50 mb-3">Arduino Smart Home &amp; Sensor Framework</h3>
+                        <p class="text-zinc-400 text-sm leading-relaxed mb-5">
+                            Designed embedded hardware firmware and structured structural circuit wiring layouts for automated sensor ecosystems and home automation logic.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="px-2.5 py-1 rounded-md bg-zinc-800/80 border border-zinc-700/60 text-xs font-mono text-zinc-300">Arduino</span>
+                            <span class="px-2.5 py-1 rounded-md bg-zinc-800/80 border border-zinc-700/60 text-xs font-mono text-zinc-300">C++ / Java Logic</span>
+                            <span class="px-2.5 py-1 rounded-md bg-zinc-800/80 border border-zinc-700/60 text-xs font-mono text-zinc-300">IoT</span>
+                            <span class="px-2.5 py-1 rounded-md bg-zinc-800/80 border border-zinc-700/60 text-xs font-mono text-zinc-300">Circuit Wiring</span>
+                        </div>
+                        <a href="https://github.com/dulithdivisekara" target="_blank" rel="noopener noreferrer"
+                           class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-zinc-700 text-sm font-medium text-zinc-300 hover:border-cyan-500/50 hover:text-cyan-400 transition-colors">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                            View on GitHub
+                        </a>
+                    </article>
+
+                    <!-- ================= PROJECT CARD 3 ================= -->
+                    <article class="group bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-8 hover:border-zinc-600 hover:scale-[1.01] transition-all duration-200">
+                        <p class="text-xs font-mono text-violet-400 uppercase tracking-widest mb-2">Leadership / Events</p>
+                        <h3 class="text-xl font-bold text-zinc-50 mb-3">Technatia Technology Exhibition</h3>
+                        <p class="text-zinc-400 text-sm leading-relaxed mb-5">
+                            Managed technical committee operations, event coordination, and digital design logistics for a major institutional technology exhibition.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="px-2.5 py-1 rounded-md bg-zinc-800/80 border border-zinc-700/60 text-xs font-mono text-zinc-300">Technical Leadership</span>
+                            <span class="px-2.5 py-1 rounded-md bg-zinc-800/80 border border-zinc-700/60 text-xs font-mono text-zinc-300">Event Management</span>
+                            <span class="px-2.5 py-1 rounded-md bg-zinc-800/80 border border-zinc-700/60 text-xs font-mono text-zinc-300">System Coordination</span>
+                        </div>
+                        <a href="https://github.com/dulithdivisekara" target="_blank" rel="noopener noreferrer"
+                           class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-zinc-700 text-sm font-medium text-zinc-300 hover:border-violet-500/50 hover:text-violet-400 transition-colors">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                            View on GitHub
+                        </a>
+                    </article>
+
                 </div>
             </div>
-            <div class="flex-1 overflow-y-auto scrollbar-thin p-4 md:p-6 min-h-0 select-text">
-                <p class="text-sm text-zinc-400 mb-4">Recruiters, engineering leads, or collaborators — drop a message right to my inbox.</p>
-                <form action="https://formspree.io/f/xqevoklz" method="POST" class="space-y-4">
+        </section>
+
+        <!-- ================= BEYOND THE SCREEN ================= -->
+        <section id="interests" class="py-20 px-6 border-t border-zinc-800/50">
+            <div class="max-w-6xl mx-auto">
+                <div class="mb-12">
+                    <p class="text-xs font-mono text-zinc-500 uppercase tracking-widest mb-3">Personality</p>
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-zinc-50">Beyond the Screen</h2>
+                    <p class="text-zinc-500 mt-3 max-w-xl">Discipline and curiosity outside of coursework — the same systematic mindset applied to different domains.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                    <!-- Interest Card 1 -->
+                    <div class="bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-8 hover:border-zinc-600 transition-colors">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
+                                <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+                            </div>
+                            <h3 class="text-lg font-semibold text-zinc-100">Acoustic Guitar &amp; Audio Production</h3>
+                        </div>
+                        <p class="text-zinc-400 text-sm leading-relaxed">
+                            Arranging, recording, and mastering musical covers with a focus on clean original audio aesthetics — applying the same attention to detail I bring to code and circuit design.
+                        </p>
+                    </div>
+
+                    <!-- Interest Card 2 -->
+                    <div class="bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-8 hover:border-zinc-600 transition-colors">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center shrink-0">
+                                <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                            </div>
+                            <h3 class="text-lg font-semibold text-zinc-100">Mechanical Restoration</h3>
+                        </div>
+                        <p class="text-zinc-400 text-sm leading-relaxed">
+                            Restoring and riding classic motorcycles, applying systematic troubleshooting and mechanical precision to vintage engines — because good engineering doesn't stop at software.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= CONTACT & FOOTER ================= -->
+        <section id="contact" class="py-20 px-6 border-t border-zinc-800/50">
+            <div class="max-w-2xl mx-auto text-center">
+                <p class="text-xs font-mono text-emerald-400 uppercase tracking-widest mb-3">Contact</p>
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-zinc-50 mb-4">Let's Connect</h2>
+                <p class="text-zinc-400 mb-10 leading-relaxed">
+                    Recruiters, engineering leads, or collaborators — I'd love to hear from you. Drop a message or reach out directly.
+                </p>
+
+                <!-- Formspree Contact Form -->
+                <form action="https://formspree.io/f/your_formspree_id" method="POST" class="space-y-4 max-w-lg mx-auto text-left mb-10">
                     <div>
-                        <label class="block text-xs uppercase tracking-wider text-zinc-500 mb-1">Name</label>
-                        <input type="text" name="name" required
-                               class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#87cf3e] transition-colors">
+                        <label for="name" class="block text-xs font-mono text-zinc-500 uppercase tracking-wider mb-1.5">Name</label>
+                        <input type="text" id="name" name="name" required
+                               class="w-full bg-zinc-900/60 border border-zinc-800/80 rounded-lg px-4 py-3 text-sm text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-emerald-500/50 transition-colors">
                     </div>
                     <div>
-                        <label class="block text-xs uppercase tracking-wider text-zinc-500 mb-1">Email Address</label>
-                        <input type="email" name="email" required
-                               class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#87cf3e] transition-colors">
+                        <label for="email" class="block text-xs font-mono text-zinc-500 uppercase tracking-wider mb-1.5">Email</label>
+                        <input type="email" id="email" name="email" required
+                               class="w-full bg-zinc-900/60 border border-zinc-800/80 rounded-lg px-4 py-3 text-sm text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-emerald-500/50 transition-colors">
                     </div>
                     <div>
-                        <label class="block text-xs uppercase tracking-wider text-zinc-500 mb-1">Message</label>
-                        <textarea name="message" rows="4" required
-                                  class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#87cf3e] transition-colors resize-none"></textarea>
+                        <label for="message" class="block text-xs font-mono text-zinc-500 uppercase tracking-wider mb-1.5">Message</label>
+                        <textarea id="message" name="message" rows="4" required
+                                  class="w-full bg-zinc-900/60 border border-zinc-800/80 rounded-lg px-4 py-3 text-sm text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-emerald-500/50 transition-colors resize-none"></textarea>
                     </div>
                     <button type="submit"
-                            class="w-full bg-[#87cf3e] hover:bg-emerald-400 text-zinc-900 font-bold py-2.5 rounded-lg text-sm transition-colors cursor-pointer">
+                            class="w-full py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 text-zinc-950 font-semibold text-sm hover:opacity-90 transition-opacity cursor-pointer">
                         Send Message
                     </button>
                 </form>
-                <div class="mt-6 pt-4 border-t border-zinc-800">
-                    <p class="text-xs text-zinc-500 uppercase tracking-wider mb-3">Or connect directly</p>
-                    <div class="flex flex-wrap gap-3">
-                        <a href="https://linkedin.com/in/dulithdivisekara" target="_blank" rel="noopener noreferrer"
-                           class="inline-flex items-center gap-2 px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-sm hover:border-[#87cf3e]/50 hover:text-[#87cf3e] transition-colors">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 114.127 0 2.063 2.063 0 01-2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                            LinkedIn
-                        </a>
-                        <a href="https://github.com/dulithdivisekara" target="_blank" rel="noopener noreferrer"
-                           class="inline-flex items-center gap-2 px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-sm hover:border-[#87cf3e]/50 hover:text-[#87cf3e] transition-colors">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                            GitHub
-                        </a>
-                    </div>
+
+                <!-- Direct Contact Links -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm">
+                    <a href="mailto:dulithmdivisekara@gmail.com"
+                       class="text-zinc-400 hover:text-emerald-400 transition-colors font-mono text-xs">
+                        dulithmdivisekara@gmail.com
+                    </a>
+                    <span class="hidden sm:inline text-zinc-700">·</span>
+                    <a href="https://github.com/dulithdivisekara" target="_blank" rel="noopener noreferrer"
+                       class="text-zinc-400 hover:text-emerald-400 transition-colors">
+                        GitHub
+                    </a>
+                    <span class="hidden sm:inline text-zinc-700">·</span>
+                    <a href="https://linkedin.com/in/dulithdivisekara" target="_blank" rel="noopener noreferrer"
+                       class="text-zinc-400 hover:text-emerald-400 transition-colors">
+                        LinkedIn
+                    </a>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <!-- ═══════════════════ START MENU ═══════════════════ -->
-    <div id="start-menu" class="hidden fixed bottom-12 left-2 z-[100] w-72 bg-zinc-900 border border-zinc-700 rounded-lg shadow-2xl overflow-hidden">
-        <div class="bg-gradient-to-r from-[#87cf3e]/20 to-emerald-900/20 px-4 py-3 border-b border-zinc-700">
-            <p class="font-semibold text-sm">Dulith Divisekara</p>
-            <p class="text-xs text-zinc-400">IT Undergraduate @ SLIIT</p>
-        </div>
-        <div class="p-3 grid grid-cols-3 gap-2">
-            <button data-window="terminal" class="start-menu-item flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-zinc-800 transition-colors">
-                <div class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center"><svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 9l3 3-3 3m5 0h3"/></svg></div>
-                <span class="text-[10px] text-center">Terminal</span>
-            </button>
-            <button data-window="system-info" class="start-menu-item flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-zinc-800 transition-colors">
-                <div class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center"><svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6"/></svg></div>
-                <span class="text-[10px] text-center">System Info</span>
-            </button>
-            <button data-window="projects" class="start-menu-item flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-zinc-800 transition-colors">
-                <div class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center"><svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg></div>
-                <span class="text-[10px] text-center">Projects</span>
-            </button>
-            <button data-window="hobbies" class="start-menu-item flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-zinc-800 transition-colors">
-                <div class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center"><svg class="w-5 h-5 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg></div>
-                <span class="text-[10px] text-center">Hobbies</span>
-            </button>
-            <button data-window="contact" class="start-menu-item flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-zinc-800 transition-colors">
-                <div class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center"><svg class="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
-                <span class="text-[10px] text-center">Contact</span>
-            </button>
-        </div>
-        <div class="px-3 py-2 border-t border-zinc-800 flex justify-end">
-            <button id="start-menu-shutdown" class="text-xs text-zinc-500 hover:text-red-400 transition-colors px-2 py-1">Close All Windows</button>
-        </div>
-    </div>
+    </main>
 
-    <!-- ═══════════════════ TASKBAR / PANEL ═══════════════════ -->
-    <footer id="taskbar" class="fixed bottom-0 left-0 right-0 h-12 bg-zinc-900/95 backdrop-blur-sm border-t border-zinc-800 flex items-center px-2 z-[90]">
-        <!-- Left: Mint Menu -->
-        <button id="menu-btn" class="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-zinc-800 transition-colors shrink-0">
-            <div class="w-6 h-6 rounded-full bg-[#87cf3e] flex items-center justify-center">
-                <svg class="w-3.5 h-3.5 text-zinc-900" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-            </div>
-            <span class="text-sm font-medium hidden sm:inline">Menu</span>
-        </button>
-
-        <!-- Center: Active Window Buttons -->
-        <div id="taskbar-windows" class="flex-1 flex items-center justify-center gap-1 overflow-x-auto px-2 mx-1 scrollbar-thin"></div>
-
-        <!-- Right: System Tray -->
-        <div class="flex items-center gap-3 shrink-0 text-zinc-400">
-            <svg class="w-4 h-4 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" title="Wi-Fi"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071a10 10 0 0114.142 0M1.394 9.393a15 15 0 0121.213 0"/></svg>
-            <svg class="w-4 h-4 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" title="Battery"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8H7a2 2 0 00-2 2v4a2 2 0 002 2h10a2 2 0 002-2v-4a2 2 0 00-2-2z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 10v4"/></svg>
-            <span id="clock" class="text-xs font-mono tabular-nums min-w-[72px] text-right text-gray-300"></span>
-        </div>
+    <!-- ================= FOOTER ================= -->
+    <footer class="border-t border-zinc-800/80 py-8 px-6">
+        <p class="text-center text-xs text-zinc-600 font-mono">
+            &copy; 2026 Dulith Divisekara. Built with HTML5 &amp; Tailwind CSS. Hosted on Cloudflare Edge.
+        </p>
     </footer>
 
-    <!-- ═══════════════════ JAVASCRIPT ═══════════════════ -->
+    <!-- ================= JAVASCRIPT ================= -->
     <script>
     (function () {
         'use strict';
 
-        /* ─── State ─── */
-        let zIndexCounter = 20;
-        let activeWindowId = null;
-        const openWindows = new Set();
-        const minimizedWindows = new Set();
+        /* ─── Mobile Navigation Toggle ─── */
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const iconOpen = document.getElementById('menu-icon-open');
+        const iconClose = document.getElementById('menu-icon-close');
 
-        const windows = document.querySelectorAll('.window');
-        const taskbarWindows = document.getElementById('taskbar-windows');
-        const startMenu = document.getElementById('start-menu');
-        const menuBtn = document.getElementById('menu-btn');
-        const clockEl = document.getElementById('clock');
-        const terminalOutput = document.getElementById('terminal-output');
-        const terminalInput = document.getElementById('terminal-input');
-
-        const isDesktop = () => window.matchMedia('(min-width: 768px)').matches;
-
-        /* ─── Window Manager ─── */
-        function getWindow(id) {
-            return document.querySelector(`.window[data-id="${id}"]`);
+        function closeMobileMenu() {
+            mobileMenu.classList.add('hidden');
+            iconOpen.classList.remove('hidden');
+            iconClose.classList.add('hidden');
+            menuBtn.setAttribute('aria-expanded', 'false');
         }
 
-        function bringToFront(win) {
-            zIndexCounter++;
-            win.style.zIndex = zIndexCounter;
-            activeWindowId = win.dataset.id;
-            updateTaskbarButtons();
-        }
-
-        function openWindow(id) {
-            const win = getWindow(id);
-            if (!win) return;
-
-            win.classList.add('open');
-            win.classList.remove('minimized');
-            minimizedWindows.delete(id);
-            openWindows.add(id);
-            bringToFront(win);
-            renderTaskbarButtons();
-
-            if (id === 'terminal') {
-                setTimeout(() => terminalInput.focus(), 100);
-            }
-
-            closeStartMenu();
-        }
-
-        function closeWindow(id) {
-            const win = getWindow(id);
-            if (!win) return;
-
-            win.classList.remove('open', 'minimized');
-            openWindows.delete(id);
-            minimizedWindows.delete(id);
-
-            if (activeWindowId === id) {
-                activeWindowId = null;
-                const remaining = [...openWindows].filter(w => !minimizedWindows.has(w));
-                if (remaining.length) {
-                    bringToFront(getWindow(remaining[remaining.length - 1]));
-                }
-            }
-            renderTaskbarButtons();
-        }
-
-        function minimizeWindow(id) {
-            if (!isDesktop()) return;
-            const win = getWindow(id);
-            if (!win || !openWindows.has(id)) return;
-
-            win.classList.add('minimized');
-            minimizedWindows.add(id);
-            updateTaskbarButtons();
-        }
-
-        function restoreWindow(id) {
-            const win = getWindow(id);
-            if (!win) return;
-
-            win.classList.remove('minimized');
-            minimizedWindows.delete(id);
-            bringToFront(win);
-        }
-
-        function toggleWindow(id) {
-            const win = getWindow(id);
-            if (!win) return;
-
-            if (!openWindows.has(id)) {
-                openWindow(id);
-            } else if (minimizedWindows.has(id)) {
-                restoreWindow(id);
-            } else if (activeWindowId === id && isDesktop()) {
-                minimizeWindow(id);
+        menuBtn.addEventListener('click', () => {
+            const isOpen = !mobileMenu.classList.contains('hidden');
+            if (isOpen) {
+                closeMobileMenu();
             } else {
-                bringToFront(win);
-            }
-        }
-
-        function closeAllWindows() {
-            [...openWindows].forEach(id => closeWindow(id));
-        }
-
-        /* ─── Taskbar ─── */
-        function renderTaskbarButtons() {
-            taskbarWindows.innerHTML = '';
-            openWindows.forEach(id => {
-                const win = getWindow(id);
-                const btn = document.createElement('button');
-                btn.className = 'taskbar-btn flex items-center gap-1.5 px-2.5 py-1 rounded text-xs whitespace-nowrap hover:bg-zinc-800 transition-colors max-w-[140px]';
-                btn.dataset.window = id;
-                btn.innerHTML = `<span class="truncate">${win.dataset.title}</span>`;
-                btn.addEventListener('click', () => toggleWindow(id));
-                taskbarWindows.appendChild(btn);
-            });
-            updateTaskbarButtons();
-        }
-
-        function updateTaskbarButtons() {
-            taskbarWindows.querySelectorAll('.taskbar-btn').forEach(btn => {
-                const id = btn.dataset.window;
-                const isActive = activeWindowId === id && !minimizedWindows.has(id);
-                btn.classList.toggle('active', isActive);
-                btn.classList.toggle('text-[#87cf3e]', isActive);
-                btn.classList.toggle('text-zinc-400', !isActive);
-            });
-        }
-
-        /* ─── Start Menu ─── */
-        function toggleStartMenu() {
-            const isHidden = startMenu.classList.contains('hidden');
-            if (isHidden) {
-                startMenu.classList.remove('hidden');
-                startMenu.classList.add('visible');
-            } else {
-                closeStartMenu();
-            }
-        }
-
-        function closeStartMenu() {
-            startMenu.classList.add('hidden');
-            startMenu.classList.remove('visible');
-        }
-
-        menuBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleStartMenu();
-        });
-
-        document.getElementById('start-menu-shutdown').addEventListener('click', () => {
-            closeAllWindows();
-            closeStartMenu();
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!startMenu.contains(e.target) && !menuBtn.contains(e.target)) {
-                closeStartMenu();
+                mobileMenu.classList.remove('hidden');
+                iconOpen.classList.add('hidden');
+                iconClose.classList.remove('hidden');
+                menuBtn.setAttribute('aria-expanded', 'true');
             }
         });
 
-        /* ─── Desktop Icon & Start Menu Launchers ─── */
-        document.querySelectorAll('[data-window]').forEach(el => {
-            if (el.classList.contains('window')) return;
-            el.addEventListener('click', () => openWindow(el.dataset.window));
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', closeMobileMenu);
         });
 
-        /* ─── Window Controls ─── */
-        windows.forEach(win => {
-            win.addEventListener('mousedown', () => {
-                if (openWindows.has(win.dataset.id) && !minimizedWindows.has(win.dataset.id)) {
-                    bringToFront(win);
-                }
-            });
+        /* ─── Smooth Scroll with Navbar Offset ─── */
+        const navHeight = 64;
 
-            win.querySelector('[data-action="close"]')?.addEventListener('click', (e) => {
-                e.stopPropagation();
-                closeWindow(win.dataset.id);
-            });
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', (e) => {
+                const targetId = anchor.getAttribute('href');
+                if (targetId === '#') return;
 
-            win.querySelector('[data-action="minimize"]')?.addEventListener('click', (e) => {
-                e.stopPropagation();
-                minimizeWindow(win.dataset.id);
-            });
-        });
+                const target = document.querySelector(targetId);
+                if (!target) return;
 
-        /* ─── Desktop Window Dragging (md+ only) ─── */
-        let dragState = null;
-
-        document.querySelectorAll('.window-drag-handle').forEach(handle => {
-            handle.addEventListener('mousedown', (e) => {
-                if (!isDesktop() || e.target.closest('button')) return;
-
-                const win = handle.closest('.window');
-                if (!win || minimizedWindows.has(win.dataset.id)) return;
-
-                const rect = win.getBoundingClientRect();
-                dragState = {
-                    win,
-                    offsetX: e.clientX - rect.left,
-                    offsetY: e.clientY - rect.top
-                };
-
-                win.style.transition = 'none';
-                win.classList.remove('md:-translate-x-1/2', 'md:-translate-y-1/2');
-                win.style.left = rect.left + 'px';
-                win.style.top = rect.top + 'px';
-                win.style.transform = 'none';
-
-                bringToFront(win);
                 e.preventDefault();
+                const top = target.getBoundingClientRect().top + window.scrollY - navHeight;
+                window.scrollTo({ top, behavior: 'smooth' });
+                closeMobileMenu();
             });
         });
 
-        document.addEventListener('mousemove', (e) => {
-            if (!dragState || !isDesktop()) return;
-            const { win, offsetX, offsetY } = dragState;
-            const panelH = 48;
-            const maxX = window.innerWidth - win.offsetWidth;
-            const maxY = window.innerHeight - win.offsetHeight - panelH;
+        /* ─── Copy CLI Command ─── */
+        const copyBtn = document.getElementById('copy-btn');
+        const cliCommand = document.getElementById('cli-command');
 
-            win.style.left = Math.max(0, Math.min(e.clientX - offsetX, maxX)) + 'px';
-            win.style.top = Math.max(0, Math.min(e.clientY - offsetY, maxY)) + 'px';
-        });
-
-        document.addEventListener('mouseup', () => {
-            dragState = null;
-        });
-
-        /* ─── Live Clock ─── */
-        function updateClock() {
-            const now = new Date();
-            clockEl.textContent = now.toLocaleTimeString('en-US', {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false
-            });
-        }
-        updateClock();
-        setInterval(updateClock, 1000);
-
-        /* ─── Terminal ─── */
-        const CV_FALLBACK = `\x1b[32m╔══════════════════════════════════════════╗
-║          DULITH DIVISEKARA — CLI CV          ║
-╚══════════════════════════════════════════╝\x1b[0m
-
-\x1b[1;36mName:\x1b[0m     Dulith Divisekara
-\x1b[1;36mTitle:\x1b[0m    Information Technology Undergraduate @ SLIIT
-\x1b[1;36mFocus:\x1b[0m    Full-stack apps, networking, embedded hardware
-
-\x1b[1;33mSkills:\x1b[0m
-  ▸ Java          — OOP, enterprise patterns
-  ▸ JavaScript    — Web apps, DOM, async
-  ▸ SQL           — Relational DB architecture
-  ▸ TCP/IP        — DHCP routing, network mgmt
-  ▸ Linux Mint    — Daily driver, sysadmin
-  ▸ Arduino       — Embedded C++, IoT sensors
-
-\x1b[2mType 'help' for available commands.\x1b[0m`;
-
-        function stripAnsi(str) {
-            return str.replace(/\x1b\[[0-9;]*m/g, '');
-        }
-
-        function ansiToHtml(text) {
-            return text
-                .replace(/\x1b\[1;36m/g, '<span class="text-cyan-300 font-semibold">')
-                .replace(/\x1b\[1;32m/g, '<span class="text-emerald-300 font-semibold">')
-                .replace(/\x1b\[1;33m/g, '<span class="text-yellow-300 font-semibold">')
-                .replace(/\x1b\[1;35m/g, '<span class="text-purple-300 font-semibold">')
-                .replace(/\x1b\[32m/g, '<span class="text-emerald-400">')
-                .replace(/\x1b\[2m/g, '<span class="text-zinc-500">')
-                .replace(/\x1b\[0m/g, '</span>')
-                .replace(/\n/g, '<br>');
-        }
-
-        function appendTerminal(text, useHtml) {
-            const line = document.createElement('div');
-            if (useHtml || text.includes('\x1b[')) {
-                line.innerHTML = ansiToHtml(text);
-            } else {
-                line.textContent = text;
-            }
-            terminalOutput.appendChild(line);
-            document.getElementById('terminal-body').scrollTop = document.getElementById('terminal-body').scrollHeight;
-        }
-
-        function formatCvFromJson(data) {
-            const skills = data.skills.map(s => `  • ${s}`).join('\n');
-            return `\x1b[1;36m======================================================================\x1b[0m
-\x1b[1;32m   ${data.name.toUpperCase()} | ${data.title.toUpperCase()}\x1b[0m
-\x1b[1;36m======================================================================\x1b[0m
-
-\x1b[1;33m[ EDUCATION ]\x1b[0m
-  • ${data.education}
-
-\x1b[1;33m[ TECHNICAL SKILLS ]\x1b[0m
-${skills}
-
-\x1b[1;33m[ CONTACT ]\x1b[0m
-  • Email    : ${data.contact.email}
-  • GitHub   : ${data.contact.github}
-  • LinkedIn : ${data.contact.linkedin}
-
-\x1b[2mType 'help' for available commands.\x1b[0m`;
-        }
-
-        async function initTerminal() {
-            appendTerminal('dulith@mint-portfolio:~$ curl https://cv.dulithdivisekara.workers.dev');
-            appendTerminal('');
-
+        copyBtn.addEventListener('click', async () => {
             try {
-                const res = await fetch('https://cv.dulithdivisekara.workers.dev/json');
-                if (res.ok) {
-                    const data = await res.json();
-                    appendTerminal(formatCvFromJson(data), true);
-                } else {
-                    appendTerminal(CV_FALLBACK, true);
-                }
+                await navigator.clipboard.writeText(cliCommand.textContent.trim());
+                copyBtn.textContent = 'Copied!';
+                setTimeout(() => { copyBtn.textContent = 'Copy'; }, 2000);
             } catch {
-                appendTerminal(CV_FALLBACK, true);
-            }
-            appendTerminal('');
-        }
-
-        const NEOFETCH = `
-           dulith@mint
-    #######
-  ##       ##
- ##  Mint   ##
- ##  21.3   ##
-  ##       ##
-    #######
-         ~/.portfolio
-
-Host................ dulith-mint-portfolio
-OS.................. Linux Mint 21.3 Cinnamon
-Role................ IT Undergraduate & Developer
-Education........... B.Sc (Hons) IT @ SLIIT`;
-
-        const COMMANDS = {
-            help: () => `Available commands:
-  help     — Show this help message
-  skills   — List technical skills
-  clear    — Clear the terminal
-  neofetch — Display system info
-  contact  — Show contact links`,
-
-            skills: () => `Technical Skills:
-  • Java          — Object-Oriented Programming
-  • JavaScript    — Full-stack web development
-  • SQL           — Relational database design
-  • TCP/IP        — Network routing & DHCP
-  • Linux Mint    — Systems administration
-  • Arduino       — Embedded IoT & sensors`,
-
-            clear: () => { terminalOutput.innerHTML = ''; return null; },
-
-            neofetch: () => NEOFETCH,
-
-            contact: () => `Contact Information:
-  Email:    dulithmdivisekara@gmail.com
-  LinkedIn: https://linkedin.com/in/dulithdivisekara
-  GitHub:   https://github.com/dulithdivisekara
-  CV:       https://cv.dulithdivisekara.workers.dev
-  Form:     Open Contact_Me.sh from the desktop`
-        };
-
-        terminalInput.addEventListener('keydown', (e) => {
-            if (e.key !== 'Enter') return;
-            const cmd = terminalInput.value.trim().toLowerCase();
-            appendTerminal(`dulith@mint-portfolio:~$ ${terminalInput.value}`);
-            terminalInput.value = '';
-
-            if (!cmd) return;
-
-            if (COMMANDS[cmd]) {
-                const result = COMMANDS[cmd]();
-                if (result !== null) {
-                    appendTerminal(result);
-                    appendTerminal('');
-                }
-            } else {
-                appendTerminal(`bash: ${cmd}: command not found`);
-                appendTerminal(`Type 'help' for available commands.`);
-                appendTerminal('');
+                copyBtn.textContent = 'Failed';
+                setTimeout(() => { copyBtn.textContent = 'Copy'; }, 2000);
             }
         });
-
-        /* ─── Responsive Init ─── */
-        function initLayout() {
-            if (isDesktop()) {
-                openWindow('terminal');
-            } else {
-                closeAllWindows();
-            }
-        }
-
-        let resizeTimer;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                windows.forEach(win => {
-                    if (!isDesktop()) {
-                        win.style.left = '';
-                        win.style.top = '';
-                        win.style.transform = '';
-                        win.classList.add('md:-translate-x-1/2', 'md:-translate-y-1/2');
-                    }
-                });
-            }, 150);
-        });
-
-        /* ─── Boot ─── */
-        initTerminal();
-        initLayout();
 
     })();
     </script>
