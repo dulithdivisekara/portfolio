@@ -84,54 +84,67 @@
                 <div class="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] bg-cyan-500/5 rounded-full blur-3xl"></div>
             </div>
 
-            <div class="relative max-w-4xl mx-auto w-full text-center md:text-left">
+            <div class="relative max-w-6xl mx-auto w-full flex flex-col-reverse md:flex-row items-center justify-between gap-12 md:gap-8 text-center md:text-left">
 
-                <!-- Status Badge -->
-                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/5 text-emerald-400 text-xs font-medium mb-8">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                    Available for collaborative roles &amp; internships
-                </div>
+                <!-- Text Content -->
+                <div class="flex-1">
+                    <!-- Status Badge -->
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/5 text-emerald-400 text-xs font-medium mb-8">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Available for collaborative roles &amp; internships
+                    </div>
 
-                <!-- Main Headline -->
-                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-zinc-50 mb-6">
-                    Dulith Divisekara
-                </h1>
+                    <!-- Main Headline -->
+                    <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-zinc-50 mb-6">
+                        Dulith Divisekara
+                    </h1>
 
-                <!-- Subheadline -->
-                <p class="text-lg md:text-xl text-zinc-400 max-w-2xl leading-relaxed font-light mb-10">
-                    Information Technology Undergraduate specializing in networking infrastructure, serverless architectures, and embedded IoT systems.
-                </p>
+                    <!-- Subheadline -->
+                    <p class="text-lg md:text-xl text-zinc-400 max-w-2xl leading-relaxed font-light mb-10 mx-auto md:mx-0">
+                        Information Technology Undergraduate specializing in networking infrastructure, serverless architectures, and embedded IoT systems.
+                    </p>
 
-                <!-- CTA Buttons -->
-                <div class="flex flex-col sm:flex-row items-center md:items-start gap-4 mb-12">
-                    <a href="#projects"
-                       class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 text-zinc-950 font-semibold text-sm hover:opacity-90 transition-opacity">
-                        Explore Projects ↓
-                    </a>
-                    <a href="#contact"
-                       class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg border border-zinc-700 text-zinc-300 font-semibold text-sm hover:border-zinc-500 hover:text-zinc-100 transition-colors">
-                        Get in Touch
-                    </a>
-                </div>
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-col sm:flex-row items-center md:items-start justify-center md:justify-start gap-4 mb-12">
+                        <a href="#projects"
+                           class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 text-zinc-950 font-semibold text-sm hover:opacity-90 transition-opacity">
+                            Explore Projects ↓
+                        </a>
+                        <a href="#contact"
+                           class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg border border-zinc-700 text-zinc-300 font-semibold text-sm hover:border-zinc-500 hover:text-zinc-100 transition-colors">
+                            Get in Touch
+                        </a>
+                    </div>
 
-                <!-- CLI Flex Box -->
-                <div class="max-w-xl mx-auto md:mx-0">
-                    <p class="text-xs text-zinc-500 mb-2 italic">Prefer the command line? Run my edge-routed resume in your terminal.</p>
-                    <div class="group relative bg-zinc-900/60 border border-zinc-800/80 rounded-xl p-4 hover:border-zinc-600 transition-colors">
-                        <div class="flex items-center gap-2 mb-3">
-                            <div class="w-2.5 h-2.5 rounded-full bg-red-500/80"></div>
-                            <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></div>
-                            <div class="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></div>
-                        </div>
-                        <div class="flex items-center justify-between gap-3">
-                            <code id="cli-command" class="font-mono text-sm text-emerald-400 break-all">curl https://cv.dulithdivisekara.workers.dev</code>
-                            <button id="copy-btn"
-                                    class="shrink-0 px-3 py-1.5 rounded-md border border-zinc-700 text-xs text-zinc-400 hover:text-zinc-100 hover:border-zinc-500 transition-colors font-mono"
-                                    aria-label="Copy command to clipboard">
-                                Copy
-                            </button>
+                    <!-- CLI Flex Box -->
+                    <div class="max-w-xl mx-auto md:mx-0 text-left">
+                        <p class="text-xs text-zinc-500 mb-2 italic text-center md:text-left">Prefer the command line? Run my edge-routed resume in your terminal.</p>
+                        <div class="group/cli relative bg-zinc-900/60 border border-zinc-800/80 rounded-xl p-4 hover:border-zinc-600 transition-colors">
+                            <div class="flex items-center gap-2 mb-3">
+                                <div class="w-2.5 h-2.5 rounded-full bg-red-500/80"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></div>
+                            </div>
+                            <div class="flex items-center justify-between gap-3">
+                                <code id="cli-command" class="font-mono text-sm text-emerald-400 break-all">curl https://cv.dulithdivisekara.workers.dev</code>
+                                <button id="copy-btn"
+                                        class="shrink-0 px-3 py-1.5 rounded-md border border-zinc-700 text-xs text-zinc-400 hover:text-zinc-100 hover:border-zinc-500 transition-colors font-mono"
+                                        aria-label="Copy command to clipboard">
+                                    Copy
+                                </button>
+                            </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- Profile Picture -->
+                <div class="shrink-0 relative group mb-4 md:mb-0 md:ml-8">
+                    <div class="absolute -inset-1 bg-gradient-to-tr from-emerald-500/30 to-cyan-500/30 rounded-[2.5rem] blur-2xl opacity-40 group-hover:opacity-70 transition duration-500"></div>
+                    <img src="assets/profile.webp" 
+                         alt="Dulith Divisekara - IT Undergraduate" 
+                         loading="eager" 
+                         fetchpriority="high" 
+                         class="relative w-56 h-56 md:w-[22rem] md:h-[22rem] object-cover rounded-[2.5rem] border border-zinc-700/50 shadow-2xl bg-zinc-900/50" />
                 </div>
             </div>
         </header>
