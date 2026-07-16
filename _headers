@@ -1,2 +1,8 @@
 /
   X-Secret-Handshake: download-cv-at-slash-cv
+
+/admin/*
+  X-Robots-Tag: noindex, nofollow
+
+/api/*
+  Cache-Control: no-store

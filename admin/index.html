@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | Dulith Divisekara</title>
+    <meta name="robots" content="noindex, nofollow">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body class="bg-[#0a0a0a] text-zinc-100 antialiased min-h-screen">
+
+    <!-- ================= LOGIN VIEW ================= -->
+    <div id="login-view" class="hidden min-h-screen flex items-center justify-center px-4">
+        <form id="login-form" class="w-full max-w-sm bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-8">
+            <p class="text-xs font-mono text-emerald-400 uppercase tracking-widest mb-2">Admin</p>
+            <h1 class="text-2xl font-bold text-zinc-50 mb-6">Sign in</h1>
+
+            <label class="block text-xs text-zinc-500 mb-1.5" for="username">Username</label>
+            <input id="username" name="username" type="text" autocomplete="username" required
+                class="w-full mb-4 px-3 py-2 rounded-lg bg-zinc-950 border border-zinc-800 text-sm text-zinc-100 focus:outline-none focus:border-emerald-500/50" />
+
+            <label class="block text-xs text-zinc-500 mb-1.5" for="password">Password</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" required
+                class="w-full mb-5 px-3 py-2 rounded-lg bg-zinc-950 border border-zinc-800 text-sm text-zinc-100 focus:outline-none focus:border-emerald-500/50" />
+
+            <p id="login-error" class="hidden text-xs text-rose-400 mb-4"></p>
+
+            <button type="submit"
+                class="w-full py-2.5 rounded-lg bg-emerald-500 text-zinc-950 text-sm font-semibold hover:bg-emerald-400 transition-colors">
+                Sign in
+            </button>
+        </form>
+    </div>
+
+    <!-- ================= DASHBOARD VIEW ================= -->
+    <div id="dashboard-view" class="hidden">
+        <nav class="border-b border-zinc-800/80 bg-zinc-950/80 backdrop-blur-md sticky top-0 z-10">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+                <p class="text-sm font-semibold text-zinc-100">Dulith<span class="text-zinc-500">.</span> Admin</p>
+                <div class="flex items-center gap-4">
+                    <a href="../" class="text-xs text-zinc-500 hover:text-zinc-300 transition-colors">View site ↗</a>
+                    <button id="logout-btn"
+                        class="text-xs px-3 py-1.5 rounded-lg border border-zinc-800 text-zinc-400 hover:text-rose-400 hover:border-rose-500/40 transition-colors">
+                        Log out
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="max-w-5xl mx-auto px-4 sm:px-6 py-10">
+            <!-- Tabs -->
+            <div class="flex gap-2 mb-8">
+                <button data-tab="certificates" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium bg-zinc-900 border border-zinc-800 text-zinc-100">Certificates</button>
+                <button data-tab="projects" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-zinc-500 hover:text-zinc-200 transition-colors">Projects</button>
+            </div>
+
+            <!-- ── Certificates tab ── -->
+            <section id="tab-certificates">
+                <form id="cert-form" class="bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-6 mb-8">
+                    <input type="hidden" id="cert-id" />
+                    <p class="text-sm font-semibold text-zinc-100 mb-4" id="cert-form-title">Add certificate</p>
+                    <div class="grid sm:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-xs text-zinc-500 mb-1.5">Title</label>
+                            <input id="cert-title" required class="field" />
+                        </div>
+                        <div>
+                            <label class="block text-xs text-zinc-500 mb-1.5">Issuer</label>
+                            <input id="cert-issuer" required class="field" />
+                        </div>
+                        <div>
+                            <label class="block text-xs text-zinc-500 mb-1.5">Date (e.g. "Jul 2026")</label>
+                            <input id="cert-date" required class="field" />
+                        </div>
+                        <div>
+                            <label class="block text-xs text-zinc-500 mb-1.5">Image URL</label>
+                            <input id="cert-image" placeholder="assets/img/certs/… or uploaded URL" class="field" />
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 mb-2">
+                        <input id="cert-image-file" type="file" accept="image/*" class="text-xs text-zinc-500" />
+                        <span id="cert-upload-status" class="text-xs text-zinc-600"></span>
+                    </div>
+                    <div class="flex gap-3 mt-4">
+                        <button type="submit" class="px-4 py-2 rounded-lg bg-emerald-500 text-zinc-950 text-sm font-semibold hover:bg-emerald-400 transition-colors">Save</button>
+                        <button type="button" id="cert-cancel" class="hidden px-4 py-2 rounded-lg border border-zinc-800 text-sm text-zinc-400 hover:text-zinc-200 transition-colors">Cancel edit</button>
+                    </div>
+                </form>
+
+                <div id="cert-list" class="space-y-3"></div>
+            </section>
+
+            <!-- ── Projects tab ── -->
+            <section id="tab-projects" class="hidden">
+                <form id="project-form" class="bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-6 mb-8">
+                    <input type="hidden" id="project-id" />
+                    <p class="text-sm font-semibold text-zinc-100 mb-4" id="project-form-title">Add project</p>
+                    <div class="grid sm:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-xs text-zinc-500 mb-1.5">Title</label>
+                            <input id="project-title" required class="field" />
+                        </div>
+                        <div>
+                            <label class="block text-xs text-zinc-500 mb-1.5">Category</label>
+                            <input id="project-category" required placeholder="Full-Stack Web Application" class="field" />
+                        </div>
+                    </div>
+                    <label class="block text-xs text-zinc-500 mb-1.5">Description</label>
+                    <textarea id="project-description" required rows="2" class="field mb-4"></textarea>
+
+                    <label class="block text-xs text-zinc-500 mb-1.5">Tags (comma-separated)</label>
+                    <input id="project-tags" placeholder="Java, Spring Boot, MVC" class="field mb-4" />
+
+                    <label class="block text-xs text-zinc-500 mb-1.5">Features (one per line, "Title: description")</label>
+                    <textarea id="project-features" rows="3" placeholder="Modular Architecture: a 6-module MVC system…" class="field mb-4"></textarea>
+
+                    <div class="grid sm:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-xs text-zinc-500 mb-1.5">Repo link (leave blank if private)</label>
+                            <input id="project-link" placeholder="https://github.com/…" class="field" />
+                        </div>
+                        <div>
+                            <label class="block text-xs text-zinc-500 mb-1.5">Accent color</label>
+                            <select id="project-color" class="field">
+                                <option value="emerald">Emerald</option>
+                                <option value="cyan">Cyan</option>
+                                <option value="blue">Blue</option>
+                                <option value="amber">Amber</option>
+                                <option value="violet">Violet</option>
+                                <option value="rose">Rose</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <button type="submit" class="px-4 py-2 rounded-lg bg-emerald-500 text-zinc-950 text-sm font-semibold hover:bg-emerald-400 transition-colors">Save</button>
+                        <button type="button" id="project-cancel" class="hidden px-4 py-2 rounded-lg border border-zinc-800 text-sm text-zinc-400 hover:text-zinc-200 transition-colors">Cancel edit</button>
+                    </div>
+                </form>
+
+                <div id="project-list" class="space-y-3"></div>
+            </section>
+        </main>
+    </div>
+
+    <style>
+        .field {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            background: rgb(9 9 11);
+            border: 1px solid rgb(39 39 42);
+            font-size: 0.875rem;
+            color: rgb(244 244 245);
+        }
+        .field:focus { outline: none; border-color: rgb(16 185 129 / 0.5); }
+    </style>
+
+    <script src="admin.js"></script>
+</body>
+
+</html>
