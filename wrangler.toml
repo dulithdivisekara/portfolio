@@ -6,7 +6,7 @@ compatibility_date = "2026-07-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "portfolio-db"
-database_id = "REPLACE_WITH_YOUR_DATABASE_ID"
+database_id = "16c7294a-4ce2-4cbf-8a6b-6a28c458c4a0"
 
 # R2 bucket - stores images uploaded from the admin panel (optional but recommended)
 [[r2_buckets]]
