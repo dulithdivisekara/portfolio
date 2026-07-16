@@ -1,7 +1,7 @@
 import { requireAuth } from '../_utils/auth.js';
 
 // POST /api/upload - protected. Accepts multipart/form-data with a "file" field,
-// stores it in the R2 bucket bound as ASSETS, and returns its public URL.
+// stores it in the R2 bucket bound as MY_BUCKET, and returns its public URL.
 // This is what lets you attach a new cert/project image from the admin panel
 // without touching the codebase. Requires the R2 bucket + R2_PUBLIC_URL (see README).
 export async function onRequestPost(context) {
@@ -10,7 +10,8 @@ export async function onRequestPost(context) {
 
     const { env, request } = context;
 
-    if (!env.ASSETS) {
+    // CHANGED: env.ASSETS is now env.MY_BUCKET
+    if (!env.MY_BUCKET) {
         return Response.json({ error: 'R2 bucket not configured (see README for setup)' }, { status: 501 });
     }
 
@@ -31,7 +32,8 @@ export async function onRequestPost(context) {
     const ext = file.name.split('.').pop().toLowerCase();
     const key = `${crypto.randomUUID()}.${ext}`;
 
-    await env.ASSETS.put(key, file.stream(), { httpMetadata: { contentType: file.type } });
+    // CHANGED: env.ASSETS is now env.MY_BUCKET
+    await env.MY_BUCKET.put(key, file.stream(), { httpMetadata: { contentType: file.type } });
 
     const url = `${env.R2_PUBLIC_URL}/${key}`;
     return Response.json({ url }, { status: 201 });

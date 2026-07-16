@@ -10,7 +10,7 @@ database_id = "REPLACE_WITH_YOUR_DATABASE_ID"
 
 # R2 bucket - stores images uploaded from the admin panel (optional but recommended)
 [[r2_buckets]]
-binding = "ASSETS"
+binding = "MY_BUCKET"
 bucket_name = "portfolio-assets"
 
 # Secrets (set via `wrangler pages secret put`, never in this file):
