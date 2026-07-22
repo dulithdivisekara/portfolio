@@ -22,14 +22,6 @@
       <img src="https://img.shields.io/github/issues/dulithdivisekara/portfolio.svg?style=for-the-badge&color=ff1744" alt="Issues" />
     </a>
   </p>
-
-  <h4>
-    <a href="[INSERT_LIVE_DEMO_URL_HERE]">View Live Demo</a>
-    <span> · </span>
-    <a href="https://github.com/dulithdivisekara/portfolio/issues">Report Bug</a>
-    <span> · </span>
-    <a href="https://github.com/dulithdivisekara/portfolio/issues">Request Feature</a>
-  </h4>
 </div>
 
 ---
